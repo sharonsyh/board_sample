@@ -49,7 +49,7 @@
 						<input type="text" class="form-control" placeholder="아이디" name="id"  maxlength="20">
 					</div>
 					<div class="form-group">
-						<input type="password" class="form-control" placeholder="비밀번호" name="pw"  maxlength="20">
+						<input type="password" class="form-control" placeholder="비밀번호" name="password"  maxlength="20">
 					</div>
 					<input type="submit" class="btn btn-primary form-control" value="로그인">
 				</form>

@@ -3,7 +3,7 @@ package user;
 public class User {
 	
 	private String id;
-	private String pw;
+	private String password;
 	private String name;
 	private String gender;
 	private String email;
@@ -13,12 +13,12 @@ public class User {
 	}
 	public void setId(String id) {
 		this.id = id;
+	}	
+	public String getPassword() {
+		return password;
 	}
-	public String getPw() {
-		return pw;
-	}
-	public void setPw(String pw) {
-		this.pw = pw;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 	public String getName() {
 		return name;
