@@ -56,4 +56,34 @@ public class UserDao {
 		
 		return -2;
 	}
+	
+	public int join(User user) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = dataSource.getConnection();
+			String query = "insert into bbs_user values (?, ?, ?, ?, ?)";
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, user.getId());
+			pstmt.setString(2, user.getPassword());
+			pstmt.setString(3, user.getName());
+			pstmt.setString(4, user.getGender());
+			pstmt.setString(5, user.getEmail());
+			
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) pstmt.close();
+				if (con != null) con.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return -1;
+	}
 }
