@@ -15,11 +15,23 @@
 <body>
 	
 	<%
-		UserDao dao = new UserDao();
+		String id = null;
 		PrintWriter writer = response.getWriter();
+		
+		if (session.getAttribute("id") != null)
+			id = (String) session.getAttribute("id");
+	
+		if (id != null) {
+			writer.println("<script>");
+			writer.println("location.href='main.jsp'");
+			writer.println("</script>");
+		}
+		
+		UserDao dao = new UserDao();
 		int result = dao.login(user.getId(), user.getPassword());
 		
 		if (result == 1) {
+			session.setAttribute("id", user.getId());
 			writer.println("<script>");
 			writer.println("location.href='main.jsp'");
 			writer.println("</script>");

@@ -32,6 +32,7 @@
 				writer.println("</script>");
 			}
 			else {
+				session.setAttribute("id", user.getId());
 				writer.println("<script>");
 				writer.println("location.href='main.jsp'");
 				writer.println("</script>");
