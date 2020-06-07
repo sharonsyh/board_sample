@@ -14,7 +14,18 @@
 <body>
 	
 	<%
+		String id = null;
 		PrintWriter writer = response.getWriter();
+		
+		if (session.getAttribute("id") != null)
+			id = (String) session.getAttribute("id");
+	
+		if (id != null) {
+			writer.println("<script>");
+			writer.println("location.href='main.jsp'");
+			writer.println("</script>");
+		}
+		
 		if (user.getId() == null || user.getPassword() == null || user.getName() == null ||
 				user.getGender() == null || user.getEmail() == null) {
 			writer.println("<script>");
