@@ -1,11 +1,19 @@
+<%@page import="bbs.Bbs"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="bbs.BbsDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width" initial-scale="1">	<!-- 반응형 웹에 사용 -->
+<meta name="viewport" content="width=device-width" initial-scale="1">	<!-- 반응형 웹에 사용. initail-scale: 페이지 처음 로드 시 초기 줌 레벨 설정 -->
 <link rel="stylesheet" href="css/bootstrap.css">
+<style type="text/css">
+	a, a:hover {
+		text-decoration: none;
+	}
+</style>
 
 <title>JSP 게시판 웹 사이트</title>
 </head>
@@ -17,6 +25,10 @@
 		String id = null;
 		if (session.getAttribute("id") != null)
 			id = (String) session.getAttribute("id");
+		
+		int pageNumber = 1;
+		if (request.getParameter("pageNumber") != null)
+			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 	%>
 	
 	<nav class="navbar navbar-default">
@@ -75,14 +87,36 @@
 					</tr>
 				</thead>
 				<tbody>
+					<%
+						BbsDao dao = new BbsDao();
+						ArrayList<Bbs> list = dao.getList(pageNumber);
+						
+						for (int i = 0; i < list.size(); ++i) {
+					%>
 					<tr>
-						<td>1</td>
-						<td>안녕하세요.</td>
-						<td>홍길동</td>
-						<td>2020-06-06</td>
+						<td><%= list.get(i).getBbsId() %></td>
+						<td><a href="view.jsp?bbsId=<%= list.get(i).getBbsId() %>"><%= list.get(i).getBbsTitle() %></a></td>
+						<td><%= list.get(i).getUserId() %></td>
+						<td><%= (list.get(i).getBbsDate().getYear() + 1900) + "-" + (list.get(i).getBbsDate().getMonth() + 1) + "-" + list.get(i).getBbsDate().getDate() + " " + list.get(i).getBbsDate().getHours() + "시 " + list.get(i).getBbsDate().getMinutes() + "분" %></td>
 					</tr>
+					<%
+						}
+					%>
 				</tbody>
 			</table>
+			<%
+				if (pageNumber != 1) {
+			%>
+				<a href="bbs.jsp?pageNumber=<%= pageNumber - 1 %>" class="btn btn-success">이전</a>
+			<%
+				}
+				
+				if (dao.nextPage(pageNumber + 1)) {
+			%>
+				<a href="bbs.jsp?pageNumber=<%= pageNumber + 1 %>" class="btn btn-success">다음</a>
+			<%
+				}
+			%>
 			<a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>
 		</div>
 	</div>
