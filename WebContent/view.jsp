@@ -1,19 +1,14 @@
-<%@page import="bbs.Bbs"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="bbs.BbsDao"%>
+<%@page import="bbs.Bbs"%>
+<%@page import="java.io.PrintWriter"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width" initial-scale="1">	<!-- 반응형 웹에 사용. initail-scale: 페이지 처음 로드 시 초기 줌 레벨 설정 -->
+<meta name="viewport" content="width=device-width" initial-scale="1">	<!-- 반응형 웹에 사용 -->
 <link rel="stylesheet" href="css/bootstrap.css">
-<style type="text/css">
-	a, a:hover {
-		text-decoration: none;
-	}
-</style>
 
 <title>JSP 게시판 웹 사이트</title>
 </head>
@@ -26,9 +21,19 @@
 		if (session.getAttribute("id") != null)
 			id = (String) session.getAttribute("id");
 		
-		int pageNumber = 1;
-		if (request.getParameter("pageNumber") != null)
-			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		int bbsId = 0;
+		if (request.getParameter("bbsId") != null)
+			bbsId = Integer.parseInt(request.getParameter("bbsId"));
+		
+		if (bbsId == 0) {
+			PrintWriter writer = response.getWriter();
+			writer.println("<script>");
+			writer.println("alert('로그인을 하세요.')");
+			writer.println("location.href='login.jsp'");
+			writer.println("</script>");
+		}
+		
+		Bbs bbs = new BbsDao().getBbs(bbsId);
 	%>
 	
 	<nav class="navbar navbar-default">
@@ -80,44 +85,38 @@
 			<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 				<thead>
 					<tr>
-						<th style="background-color: #eeeeee; text-align: center;">번호</th>
-						<th style="background-color: #eeeeee; text-align: center;">제목</th>
-						<th style="background-color: #eeeeee; text-align: center;">작성자</th>
-						<th style="background-color: #eeeeee; text-align: center;">작성일</th>
+						<th colspan="3" style="background-color: #eeeeee; text-align: center;">게시판 글 보기</th>
 					</tr>
 				</thead>
 				<tbody>
-					<%
-						BbsDao dao = new BbsDao();
-						ArrayList<Bbs> list = dao.getList(pageNumber);
-						
-						for (int i = 0; i < list.size(); ++i) {
-					%>
 					<tr>
-						<td><%= list.get(i).getBbsId() %></td>
-						<td><a href="view.jsp?bbsId=<%= list.get(i).getBbsId() %>"><%= list.get(i).getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></a></td>
-						<td><%= list.get(i).getUserId() %></td>
-						<td><%= (list.get(i).getBbsDate().getYear() + 1900) + "-" + (list.get(i).getBbsDate().getMonth() + 1) + "-" + list.get(i).getBbsDate().getDate() + " " + list.get(i).getBbsDate().getHours() + "시 " + list.get(i).getBbsDate().getMinutes() + "분" %></td>
+						<!-- replaceAll: 특수문자 처리 -->
+						<td style="width: 20%">글 제목</td>
+						<td colspan="2"><%= bbs.getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></td>
 					</tr>
-					<%
-						}
-					%>
+					<tr>
+						<td>작성자</td>
+						<td colspan="2"><%= bbs.getUserId() %></td>
+					</tr>
+					<tr>
+						<td>작성일</td>
+						<td colspan="2"><%= (bbs.getBbsDate().getYear() + 1900) + "-" + (bbs.getBbsDate().getMonth() + 1) + "-" + bbs.getBbsDate().getDate() + " " + bbs.getBbsDate().getHours() + "시 " + bbs.getBbsDate().getMinutes() + "분" %></td>
+					</tr>
+					<tr>
+						<td>내용</td>
+						<td colspan="2" style="min-height: 200px; text-align: left"><%= bbs.getBbsContent().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></td>
+					</tr>
 				</tbody>
 			</table>
+			<a href="bbs.jsp" class="btn btn-primary">목록</a>
 			<%
-				if (pageNumber != 1) {
+				if (id != null && id.equals(bbs.getUserId())) {
 			%>
-				<a href="bbs.jsp?pageNumber=<%= pageNumber - 1 %>" class="btn btn-success">이전</a>
-			<%
-				}
-				
-				if (dao.nextPage(pageNumber + 1)) {
-			%>
-				<a href="bbs.jsp?pageNumber=<%= pageNumber + 1 %>" class="btn btn-success">다음</a>
+				<a href="update.jsp?bbsId=<%= bbsId %>" class="btn btn-primary">수정</a>
+				<a href="deleteAction.jsp?bbsId=<%= bbsId %>" class="btn btn-primary">삭제</a>
 			<%
 				}
 			%>
-			<a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>
 		</div>
 	</div>
 </body>
