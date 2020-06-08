@@ -160,6 +160,60 @@ public class BbsDao {
 		return null;
 	}
 	
+	public int update(int bbsId, String bbsTitle, String bbsContent) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = dataSource.getConnection();
+			String query = "update bbs set bbsTitle = ?, bbsContent = ? where bbsId = ?";
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, bbsTitle);
+			pstmt.setString(2, bbsContent);
+			pstmt.setInt(3, bbsId);
+			
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) pstmt.close();
+				if (con != null) con.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return -1;
+	}
+	
+	public int delete(int bbsId) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = dataSource.getConnection();
+			String query = "update bbs set bbsAvailable = 0 where bbsId = ?";
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, bbsId);
+			
+			return pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) pstmt.close();
+				if (con != null) con.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return -1;
+	}
+	
 	public int getNextBbsId() {
 		
 		Connection con = null;
