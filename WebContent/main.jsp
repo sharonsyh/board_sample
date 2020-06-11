@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width" initial-scale="1">	<!-- 반응형 웹에 사용 -->
+<meta name="viewport" content="width=device-width" initial-scale="1">	<!-- 반응형 웹에 사용. initail-scale: 페이지 처음 로드 시 초기 줌 레벨 설정 -->
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/custom.css">
 
@@ -22,6 +22,11 @@
 	
 	<nav class="navbar navbar-default">
 		<div class="navbar-header">
+			<!--
+				data-toggle="collapse": 정보를 접었다가 클릭하면 펼쳐짐
+				data-target="#abc": id="abc"와 연결. id는 접으려고 하는 컨텐츠
+				aria-expanded="false": 정보 접은 상태로 유지. true면 펼쳐져있는 상태
+			-->
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
@@ -40,6 +45,11 @@
 			%>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
+					<!--
+						role="button": 버튼 기능
+						aria-haspopup="true": 하위 메뉴가 있다는 걸 암시
+						href="#": 연결할 링크가 없음
+					-->
 					<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" href="#">접속하기<span class="caret"></span></a>
 					<ul class="dropdown-menu">
 						<li><a href="login.jsp">로그인</a></li>

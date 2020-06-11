@@ -1,5 +1,5 @@
-<%@page import="bbs.BbsDao"%>
-<%@page import="bbs.Bbs"%>
+<%@page import="dao.BbsDao"%>
+<%@page import="dto.BbsDto"%>
 <%@page import="java.io.PrintWriter"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width" initial-scale="1">	<!-- 반응형 웹에 사용 -->
+<meta name="viewport" content="width=device-width" initial-scale="1">
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/custom.css">
 
@@ -22,11 +22,11 @@
 		if (session.getAttribute("id") != null)
 			id = (String) session.getAttribute("id");
 		
-		int bbsId = 0;
-		if (request.getParameter("bbsId") != null)
-			bbsId = Integer.parseInt(request.getParameter("bbsId"));
+		int bId = 0;
+		if (request.getParameter("bId") != null)
+			bId = Integer.parseInt(request.getParameter("bId"));
 		
-		if (bbsId == 0) {
+		if (bId == 0) {
 			PrintWriter writer = response.getWriter();
 			writer.println("<script>");
 			writer.println("alert('유효하지 않은 글입니다.')");
@@ -34,7 +34,7 @@
 			writer.println("</script>");
 		}
 		
-		Bbs bbs = new BbsDao().getBbs(bbsId);
+		BbsDto dto = new BbsDao().getContent(bId, true);
 	%>
 	
 	<nav class="navbar navbar-default">
@@ -93,32 +93,33 @@
 					<tr>
 						<!-- replaceAll: 특수문자 처리 -->
 						<td style="width: 20%">글 제목</td>
-						<td colspan="2"><%= bbs.getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></td>
+						<td colspan="2"><%= dto.getbTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></td>
 					</tr>
 					<tr>
 						<td>작성자</td>
-						<td colspan="2"><%= bbs.getUserId() %></td>
+						<td colspan="2"><%= dto.getuserId() %></td>
 					</tr>
 					<tr>
 						<td>작성일</td>
-						<td colspan="2"><%= (bbs.getBbsDate().getYear() + 1900) + "-" + (bbs.getBbsDate().getMonth() + 1) + "-" + bbs.getBbsDate().getDate() + " " + bbs.getBbsDate().getHours() + "시 " + bbs.getBbsDate().getMinutes() + "분" %></td>
+						<td colspan="2"><%= (dto.getbDate().getYear() + 1900) + "-" + (dto.getbDate().getMonth() + 1) + "-" + dto.getbDate().getDate() + " " + dto.getbDate().getHours() + "시 " + dto.getbDate().getMinutes() + "분" %></td>
 					</tr>
 					<tr>
 						<td>내용</td>
-						<td colspan="2" style="min-height: 200px; text-align: left"><%= bbs.getBbsContent().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></td>
+						<td colspan="2" style="min-height: 200px; text-align: left"><%= dto.getbContent().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></td>
 					</tr>
 				</tbody>
 			</table>
 			<a href="bbs.jsp" class="btn btn-primary">목록</a>
 			<%
-				if (id != null && id.equals(bbs.getUserId())) {
+				if (id != null && id.equals(dto.getuserId())) {
 			%>
-				<a href="update.jsp?bbsId=<%= bbsId %>" class="btn btn-primary">수정</a>
-				<a href="deleteAction.jsp?bbsId=<%= bbsId %>" class="btn btn-primary" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+				<a href="update.jsp?bId=<%= bId %>" class="btn btn-primary">수정</a>
+				<a href="deleteAction.jsp?bId=<%= bId %>" class="btn btn-primary" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
 			<%
 				}
 			%>
 		</div>
 	</div>
+	
 </body>
 </html>

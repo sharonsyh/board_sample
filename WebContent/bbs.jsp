@@ -1,17 +1,19 @@
-<%@page import="bbs.Bbs"%>
+<%@page import="dto.BbsDto"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="bbs.BbsDao"%>
+<%@page import="dao.BbsDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width" initial-scale="1">	<!-- 반응형 웹에 사용. initail-scale: 페이지 처음 로드 시 초기 줌 레벨 설정 -->
+<meta name="viewport" content="width=device-width" initial-scale="1">
 <link rel="stylesheet" href="css/bootstrap.css">
 <link rel="stylesheet" href="css/custom.css">
+
 <style type="text/css">
 	a, a:hover {
+		color: #000000;
 		text-decoration: none;
 	}
 </style>
@@ -85,20 +87,22 @@
 						<th style="background-color: #eeeeee; text-align: center;">제목</th>
 						<th style="background-color: #eeeeee; text-align: center;">작성자</th>
 						<th style="background-color: #eeeeee; text-align: center;">작성일</th>
+						<th style="background-color: #eeeeee; text-align: center;">조회수</th>
 					</tr>
 				</thead>
 				<tbody>
 					<%
 						BbsDao dao = new BbsDao();
-						ArrayList<Bbs> list = dao.getList(pageNumber);
+						ArrayList<BbsDto> list = dao.list(pageNumber);
 						
 						for (int i = 0; i < list.size(); ++i) {
 					%>
 					<tr>
-						<td><%= list.get(i).getBbsId() %></td>
-						<td><a href="view.jsp?bbsId=<%= list.get(i).getBbsId() %>"><%= list.get(i).getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></a></td>
-						<td><%= list.get(i).getUserId() %></td>
-						<td><%= (list.get(i).getBbsDate().getYear() + 1900) + "-" + (list.get(i).getBbsDate().getMonth() + 1) + "-" + list.get(i).getBbsDate().getDate() + " " + list.get(i).getBbsDate().getHours() + "시 " + list.get(i).getBbsDate().getMinutes() + "분" %></td>
+						<td><%= list.get(i).getbId() %></td>
+						<td><a href="content.jsp?bId=<%= list.get(i).getbId() %>"><%= list.get(i).getbTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></a></td>
+						<td><%= list.get(i).getuserId() %></td>
+						<td><%= (list.get(i).getbDate().getYear() + 1900) + "-" + (list.get(i).getbDate().getMonth() + 1) + "-" + list.get(i).getbDate().getDate() + " " + list.get(i).getbDate().getHours() + "시 " + list.get(i).getbDate().getMinutes() + "분" %></td>
+						<td><%= list.get(i).getbHit() %></td>
 					</tr>
 					<%
 						}

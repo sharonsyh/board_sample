@@ -1,11 +1,8 @@
 <%@page import="java.io.PrintWriter"%>
-<%@page import="user.UserDao"%>
+<%@page import="dao.BbsDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<% request.setCharacterEncoding("UTF-8"); %>
-<jsp:useBean id="user" class="user.User" scope="page"/>
-<jsp:setProperty name="user" property="id"/>
-<jsp:setProperty name="user" property="password"/>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,25 +10,30 @@
 <title>JSP 게시판 웹 사이트</title>
 </head>
 <body>
-	
+
 	<%
+		request.setCharacterEncoding("UTF-8");
+		
 		String id = null;
 		PrintWriter writer = response.getWriter();
-		
+	
 		if (session.getAttribute("id") != null)
 			id = (String) session.getAttribute("id");
-	
+		
 		if (id != null) {
 			writer.println("<script>");
 			writer.println("location.href='main.jsp'");
 			writer.println("</script>");
 		}
 		
-		UserDao dao = new UserDao();
-		int result = dao.login(user.getId(), user.getPassword());
+		id = request.getParameter("id");
+		String pw = request.getParameter("pw");
+		
+		BbsDao dao = new BbsDao();
+		int result = dao.login(id, pw);
 		
 		if (result == 1) {
-			session.setAttribute("id", user.getId());
+			session.setAttribute("id", id);
 			writer.println("<script>");
 			writer.println("location.href='main.jsp'");
 			writer.println("</script>");
@@ -55,6 +57,6 @@
 			writer.println("</script>");
 		}
 	%>
-	
+
 </body>
 </html>
