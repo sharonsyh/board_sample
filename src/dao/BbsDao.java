@@ -126,6 +126,76 @@ public class BbsDao {
 		return -2;	// db 오류
 	}
 	
+	public UserDto getUser(String id) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			con = ds.getConnection();
+			String query = "select * from bbs_user where id = ?";
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				UserDto dto = new UserDto();
+				dto.setId(rs.getString(1));
+				dto.setPw(rs.getString(2));
+				dto.setName(rs.getString(3));
+				dto.setGender(rs.getString(4));
+				dto.setEmail(rs.getString(5));
+				
+				return dto;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null) rs.close();
+				if (pstmt != null) pstmt.close();
+				if (con != null) con.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return null;
+	}
+	
+	public int userUpdate(UserDto dto) {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			con = ds.getConnection();
+			String query = "update bbs_user set pw = ?, name = ?, gender = ?, email = ? where id = ?";
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, dto.getPw());
+			pstmt.setString(2, dto.getName());
+			pstmt.setString(3, dto.getGender());
+			pstmt.setString(4, dto.getEmail());
+			pstmt.setString(5, dto.getId());
+						
+			return pstmt.executeUpdate();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pstmt != null) pstmt.close();
+				if (con != null) con.close();
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		
+		return -1;	// db 오류
+	}
+	
 	public ArrayList<BbsDto> list(int pageNumber) {
 		
 		Connection con = null;

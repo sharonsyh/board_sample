@@ -21,13 +21,13 @@
 		if (session.getAttribute("id") != null)
 			id = (String) session.getAttribute("id");
 		
-		if (id != null) {
+		if (id == null) {
 			writer.println("<script>");
 			writer.println("location.href='main.jsp'");
 			writer.println("</script>");
 		}
 		
-		if (dto.getId() == null || dto.getPw() == null || dto.getName() == null ||
+		if (dto.getPw() == null || dto.getName() == null ||
 				dto.getGender() == null || dto.getEmail() == null) {
 			writer.println("<script>");
 			writer.println("alert('입력이 안 된 항목이 있습니다.')");
@@ -35,32 +35,17 @@
 			writer.println("</script>");
 		} else {
 			BbsDao dao = new BbsDao();
-			int result = dao.existId(dto.getId());
+			int result = dao.userUpdate(dto);
 			
 			if (result == -1) {
 				writer.println("<script>");
 				writer.println("alert('데이터 베이스 오류가 발생했습니다.')");
 				writer.println("history.back()");
 				writer.println("</script>");
-			} else if (result == 1){
-				writer.println("<script>");
-				writer.println("alert('이미 존재하는 아이디입니다.')");
-				writer.println("history.back()");
-				writer.println("</script>");
 			} else {
-				int joinResult = dao.join(dto);
-				
-				if (joinResult == -1) {
-					writer.println("<script>");
-					writer.println("alert('회원가입에 실패하였습니다.')");
-					writer.println("history.back()");
-					writer.println("</script>");
-				} else {
-					session.setAttribute("id", dto.getId());
-					writer.println("<script>");
-					writer.println("location.href='main.jsp'");
-					writer.println("</script>");
-				}
+				writer.println("<script>");
+				writer.println("location.href='main.jsp'");
+				writer.println("</script>");
 			}
 		}
 	%>
