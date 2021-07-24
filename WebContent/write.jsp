@@ -16,8 +16,7 @@
 	
 	<%
 		String id = null;
-		if (session.getAttribute("id") != null)
-			id = (String) session.getAttribute("id");
+		if (session.getAttribute("id") != null) id = (String) session.getAttribute("id");
 	%>
 	
 	<nav class="navbar navbar-default">

@@ -17,12 +17,14 @@ public class BbsDao {
 	private DataSource ds;
 	
 	public BbsDao() {
+		
 		try {
 			Context context = new InitialContext();
-			ds = (DataSource) context.lookup("java:comp/env/jdbc/Oracle11g");
+			ds = (DataSource) context.lookup("jdbc/UsersDB");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 	}
 	
 	
@@ -40,9 +42,9 @@ public class BbsDao {
 			rs = pstmt.executeQuery();
 			
 			if (rs.next())
-				return 1;	// ¾ÆÀÌµð Á¸Àç
+				return 1;	// ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
 			else
-				return 0;	// ¾ÆÀÌµð ºÎÀç
+				return 0;	// ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,7 +58,7 @@ public class BbsDao {
 			}
 		}
 		
-		return -1;	// db ¿À·ù
+		return -1;	// db ï¿½ï¿½ï¿½ï¿½
 	}
 	
 	public int join(UserDto dto) {
@@ -87,7 +89,7 @@ public class BbsDao {
 			}
 		}
 		
-		return -1;	// db ¿À·ù
+		return -1;	// db ï¿½ï¿½ï¿½ï¿½
 	}
 	
 	public int login(String id, String pw) {
@@ -105,11 +107,11 @@ public class BbsDao {
 			
 			if (rs.next()) {
 				if (rs.getString(1).equals(pw))
-					return 1;	// ¼º°ø
+					return 1;	// ï¿½ï¿½ï¿½ï¿½
 				else
-					return 0;	// ºñ¹Ð¹øÈ£ Æ²¸²
+					return 0;	// ï¿½ï¿½Ð¹ï¿½È£ Æ²ï¿½ï¿½
 			} else {
-				return -1;		// ¾ÆÀÌµð°¡ Á¸ÀçÇÏÁö ¾ÊÀ½
+				return -1;		// ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -123,7 +125,7 @@ public class BbsDao {
 			}
 		}
 		
-		return -2;	// db ¿À·ù
+		return -2;	// db ï¿½ï¿½ï¿½ï¿½
 	}
 	
 	public UserDto getUser(String id) {
@@ -193,7 +195,7 @@ public class BbsDao {
 			}
 		}
 		
-		return -1;	// db ¿À·ù
+		return -1;	// db ï¿½ï¿½ï¿½ï¿½
 	}
 	
 	public ArrayList<BbsDto> list(int pageNumber) {
@@ -295,12 +297,12 @@ public class BbsDao {
 			}
 		}
 		
-		return -1;	// db ¿À·ù
+		return -1;	// db ï¿½ï¿½ï¿½ï¿½
 	}
 	
 	public BbsDto getContent(int bId, boolean view) {
 		
-		if (view == true)	// °Ô½Ã±Û Å¬¸¯ ÇßÀ» °æ¿ì
+		if (view == true)	// ï¿½Ô½Ã±ï¿½ Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 			upHit(bId);
 		
 		Connection con = null;
@@ -366,7 +368,7 @@ public class BbsDao {
 			}
 		}
 		
-		return -1;	// db ¿À·ù
+		return -1;	// db ï¿½ï¿½ï¿½ï¿½
 	}
 	
 	public int delete(int bId) {
@@ -393,7 +395,7 @@ public class BbsDao {
 			}
 		}
 		
-		return -1;	// db ¿À·ù
+		return -1;	// db ï¿½ï¿½ï¿½ï¿½
 	}
 	
 	public int getNextBbsId() {
@@ -411,7 +413,7 @@ public class BbsDao {
 			if (rs.next())
 				return rs.getInt(1) + 1;
 			else
-				return 1;	// Ã¹ ±ÛÀÏ °æ¿ì
+				return 1;	// Ã¹ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -425,7 +427,7 @@ public class BbsDao {
 			}
 		}
 		
-		return -1;	// db ¿À·ù
+		return -1;	// db ï¿½ï¿½ï¿½ï¿½
 	}
 	
 	public void upHit(int bId) {

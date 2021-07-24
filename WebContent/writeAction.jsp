@@ -1,4 +1,4 @@
-<%@page import="java.io.PrintWriter"%>
+<%@page import="java.io.*"%>
 <%@page import="dao.BbsDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
